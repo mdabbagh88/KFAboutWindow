@@ -45,6 +45,8 @@ static const unsigned short KFEscapeKeyCode = 53;
 @property (nonatomic) NSNumber *canToggleScroll;
 
 @property (strong) id eventMonitor;
+@property (unsafe_unretained) IBOutlet NSLayoutConstraint *backgroundViewBottomConstraint;
+@property (strong) KFAboutWindowStyleModel *styleModel;
 
 @end
 
@@ -67,8 +69,7 @@ static const unsigned short KFEscapeKeyCode = 53;
 }
 
 
-- (void)windowDidLoad
-{
+- (void)windowDidLoad {
     [super windowDidLoad];
 
     [self.backgroundView setWantsLayer:YES];
@@ -82,29 +83,27 @@ static const unsigned short KFEscapeKeyCode = 53;
 
     NSTextContainer *container = [self.scrollTextView textContainer];
     [container setLineFragmentPadding:0];
-    
+
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-    
+
     self.bundleName             = info[@"CFBundleName"];
     self.bundleShortVersion     = info[@"CFBundleShortVersionString"];
     self.bundleVersion          = info[@"CFBundleVersion"];
     self.humanReadableCopyright = info[@"NSHumanReadableCopyright"];
-    
+
     NSString *creditsPath = [[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"];
-    
-    if (creditsPath != nil)
-    {
+
+    if (creditsPath != nil) {
         self.credits = [[NSAttributedString alloc] initWithPath:creditsPath documentAttributes:nil];
     }
-   
+
     NSString *acknowledgementsPath = [[NSBundle mainBundle] pathForResource:@"Acknowledgements" ofType:@"plist"];
-    if (acknowledgementsPath != nil)
-    {
+    if (acknowledgementsPath != nil) {
         self.acknowledgements = [NSAttributedString attributedStringWithCocoaPodsAcknowledgementsAtPath:acknowledgementsPath];
     }
-    
+
     [[self.toggleDisplayButton superview] setNeedsUpdateConstraints:YES];
-    
+
     self.displayMode = KFAboutDisplayModeCredits;
     [self updateModeValues];
 
@@ -112,40 +111,31 @@ static const unsigned short KFEscapeKeyCode = 53;
     [self applyStyle:defaultStyle];
 }
 
-
-- (void)updateModeValues
-{
-    if (self.displayMode == KFAboutDisplayModeCredits)
-    {
+- (void)updateModeValues {
+    if (self.displayMode == KFAboutDisplayModeCredits) {
         self.attributedString = self.credits;
         self.toggleButtonText = NSLocalizedString(@"Acknowledgements", nil);
         self.scrollTextView.autoScrolling = NO;
     }
-    else
-    {
+    else {
         self.scrollTextView.autoScrolling = YES;
         [NSObject cancelPreviousPerformRequestsWithTarget:self.scrollTextView selector:@selector(startScrolling) object:nil];
         [self.scrollTextView performSelector:@selector(startScrolling) withObject:nil afterDelay:5.0];
-        
+
         self.attributedString = self.acknowledgements;
         self.toggleButtonText = NSLocalizedString(@"Credits", nil);
     }
 }
 
-
 #pragma mark - Customizing
 
-
-- (void)setBackgroundImage:(NSImage *)backgroundImage
-{
+- (void)setBackgroundImage:(NSImage *)backgroundImage {
     self.backgroundImageView.image = backgroundImage;
 }
 
-
-- (void)setBackgroundColor:(NSColor *)backgroundColor
-{
+- (void)setBackgroundColor:(NSColor *)backgroundColor{
     self.backgroundView.layer.backgroundColor = [backgroundColor CGColor];
-    self.scrollTextView.backgroundColor = backgroundColor;
+//    self.scrollTextView.backgroundColor = backgroundColor;
     self.scrollView.gradientColor = backgroundColor;
 }
 
@@ -153,89 +143,121 @@ static const unsigned short KFEscapeKeyCode = 53;
     self.backgroundViewSeparator.borderColor = separatorColor.CGColor;
 }
 
-- (void)applyStyle:(KFAboutWindowStyleModel *)styleModel
-{
-    if (styleModel.backgroundImage != nil)
-    {
+- (void)applyStyle:(KFAboutWindowStyleModel *)styleModel {
+    self.styleModel = styleModel;
+
+    if (styleModel.backgroundImage != nil){
         [self setBackgroundImage:styleModel.backgroundImage];
     }
-    if (styleModel.backgroundColor != nil)
-    {
+
+    if (styleModel.backgroundColor != nil) {
         [self setBackgroundColor:styleModel.backgroundColor];
     }
-    if (styleModel.backgroundSeparatorColor)
-    {
+
+    if (styleModel.backgroundSeparatorColor) {
         [self setBackgroundSeparatorColor:styleModel.backgroundSeparatorColor];
     }
-    if (styleModel.bundleNameLabelColor != nil)
-    {
+
+    if (styleModel.bundleNameLabelColor != nil) {
         [self.bundleNameLabel setTextColor:styleModel.bundleNameLabelColor];
     }
-    if (styleModel.versionLabelColor != nil)
-    {
+
+    if (styleModel.versionLabelColor != nil) {
         [self.versionLabel setTextColor:styleModel.versionLabelColor];
     }
-    if (styleModel.acknowledgementsTextColor != nil)
-    {
+
+    if (styleModel.acknowledgementsTextColor != nil) {
         NSMutableAttributedString *styledAcknowledgements = [self.acknowledgements mutableCopy];
         [styledAcknowledgements setAttributes:@{NSForegroundColorAttributeName:styleModel.acknowledgementsTextColor} range:NSMakeRange(0, [self.acknowledgements length])];
         self.acknowledgements = [styledAcknowledgements copy];
     }
-    if (styleModel.humanReadableCopyrightLabelColor != nil)
-    {
+
+    if (styleModel.humanReadableCopyrightLabelColor != nil) {
         [self.humanReadableCopyrightLabel setTextColor:styleModel.humanReadableCopyrightLabelColor];
     }
+
     if (styleModel.bundleNameLabelFont) {
         self.bundleNameLabel.font = styleModel.bundleNameLabelFont;
     }
+
     if (styleModel.versionLabelFont) {
         self.versionLabel.font = styleModel.versionLabelFont;
     }
+
     if (styleModel.humanReadableCopyrightLabelFont) {
         self.humanReadableCopyrightLabel.font = styleModel.humanReadableCopyrightLabelFont;
+    }
+
+    if (styleModel.isBorderless) {
+        [self configureAsBorderlessWindow];
     }
 }
 
 #pragma mark - Window show/hide
 
-
-- (void)showWindow:(id)sender
-{
+- (void)showWindow:(id)sender {
     [NSObject cancelPreviousPerformRequestsWithTarget:self.scrollTextView selector:@selector(startScrolling) object:nil];
     NSImage *appIconImage = [NSApp applicationIconImage];
     [appIconImage setSize:NSMakeSize(128.0, 128.0)];
     [self.appIconImageView setImage:appIconImage];
-    
+
     [self updateModeValues];
-    
     [self addObservers];
-    [super showWindow:sender];
-    
+
+    if (self.styleModel.isBorderless) {
+        [self.window center];
+        [super showWindow:sender];
+    }
+    else {
+        [super showWindow:sender];
+    }
 }
 
-
-- (void)addObservers
-{
+- (void)addObservers {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResignKeyOrMainNotification:) name:NSWindowDidResignKeyNotification object:self.window];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResignKeyOrMainNotification:) name:NSWindowDidResignMainNotification object:self.window];
 }
 
+- (void)removeObservers {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignKeyNotification object:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignMainNotification object:self];
+}
 
-- (void)windowDidResignKeyOrMainNotification:(NSNotification *)notification
-{
+- (void)windowDidResignKeyOrMainNotification:(NSNotification *)notification {
     [self removeObservers];
     [self.window setIsVisible:NO];
     [self.scrollTextView stopScrolling];
-    
+
     self.displayMode = KFAboutDisplayModeCredits;
     [self updateModeValues];
 }
 
+#pragma mark - Window Configuration
 
-- (void)removeObservers
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignKeyNotification object:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignMainNotification object:self];
+- (void)configureAsBorderlessWindow {
+    NSButton *closeButton = [self.window standardWindowButton:NSWindowCloseButton];
+
+    self.window.styleMask       = NSBorderlessWindowMask;
+    self.window.backgroundColor = [NSColor clearColor];
+    self.window.opaque          = NO;
+    self.window.hasShadow       = YES;
+    self.window.level           = NSModalPanelWindowLevel;
+
+    self.backgroundView.wantsLayer = YES;
+    self.backgroundView.frame = NSMakeRect(NSMinX(self.backgroundView.frame),
+                                           NSMinY(self.backgroundView.frame),
+                                           NSWidth(self.backgroundView.frame),
+                                           NSHeight(self.backgroundView.frame) + self.backgroundViewBottomConstraint.constant);
+    self.backgroundView.layer.frame = self.backgroundView.frame;
+    self.backgroundView.layer.cornerRadius = 5.0;
+    self.backgroundView.layer.masksToBounds = YES;
+    self.backgroundView.layer.edgeAntialiasingMask = kCALayerLeftEdge | kCALayerRightEdge | kCALayerBottomEdge | kCALayerTopEdge;
+
+    self.backgroundViewBottomConstraint.constant = 0;
+
+    closeButton.frame = NSMakeRect(6, NSHeight(self.backgroundView.frame)-20, NSWidth(closeButton.frame), NSHeight(closeButton.frame));
+    [self.backgroundView addSubview:closeButton];
+    closeButton.enabled = YES;
 }
 
 #pragma mark - Keystroke Handling
@@ -251,27 +273,20 @@ static const unsigned short KFEscapeKeyCode = 53;
     }];
 }
 
-
 #pragma mark - Actions
 
-
-- (IBAction)visitWebsiteAction:(id)sender
-{
-    if (self.websiteURL != nil)
-    {
+- (IBAction)visitWebsiteAction:(id)sender {
+    if (self.websiteURL != nil) {
         [[NSWorkspace sharedWorkspace] openURL:self.websiteURL];
     }
 }
 
-
-- (IBAction)toggleScrollTextContent:(id)sender
-{
+- (IBAction)toggleScrollTextContent:(id)sender {
     [self.scrollTextView stopScrolling];
     [self.scrollTextView scrollPoint:NSMakePoint(0.0, 0.0)];
-    
+
     self.displayMode = self.displayMode == KFAboutDisplayModeCredits ? KFAboutDisplayModeAcknowledgements : KFAboutDisplayModeCredits;
     [self updateModeValues];
 }
-
 
 @end

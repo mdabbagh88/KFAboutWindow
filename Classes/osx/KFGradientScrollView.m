@@ -27,9 +27,8 @@ static const CGFloat kKFShadowHeightDefaultValue = 23.0;
 - (void)tile {
     [super tile];
 
-    NSRect bounds = self.bounds;
-    self.topShadowView.frame    = NSMakeRect(0, 0, NSWidth(bounds), self.gradientHeight);
-    self.bottomShadowView.frame = NSMakeRect(0, NSMaxY(bounds) - self.gradientHeight, NSWidth(bounds), self.gradientHeight);
+    self.topShadowView.frame    = NSMakeRect(0, 0, NSWidth(self.bounds), self.gradientHeight);
+    self.bottomShadowView.frame = NSMakeRect(0, NSMaxY(self.bounds) - self.gradientHeight, NSWidth(self.bounds), self.gradientHeight);
 
     [self.topShadowView setNeedsDisplay:YES];
     [self.bottomShadowView setNeedsDisplay:YES];
@@ -42,6 +41,7 @@ static const CGFloat kKFShadowHeightDefaultValue = 23.0;
     if (_hasTopGradient) {
         if (!self.bottomShadowView) {
             self.topShadowView = [[KFGradientView alloc] init];
+            self.topShadowView.frame    = NSMakeRect(0, 0, NSWidth(self.bounds), self.gradientHeight);
             [self addSubview:self.topShadowView positioned:NSWindowAbove relativeTo:self.contentView];
         }
         self.topShadowView.alphaValue = 0.0;
@@ -58,6 +58,7 @@ static const CGFloat kKFShadowHeightDefaultValue = 23.0;
         if (!self.bottomShadowView) {
             self.bottomShadowView = [[KFGradientView alloc] init];
             self.bottomShadowView.edge = KFGradientViewEdgeBottom;
+            self.bottomShadowView.frame = NSMakeRect(0, NSMaxY(self.bounds) - self.gradientHeight, NSWidth(self.bounds), self.gradientHeight);
             [self addSubview:self.bottomShadowView positioned:NSWindowAbove relativeTo:self.contentView];
         }
         self.bottomShadowView.alphaValue = 0.0;

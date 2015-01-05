@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSColor *versionLabelColor;
 @property (nonatomic, strong) NSColor *humanReadableCopyrightLabelColor;
 @property (nonatomic, strong) NSColor *acknowledgementsTextColor;
+@property (assign, nonatomic, getter=isBorderless) BOOL borderless;
 
 @property (nonatomic, strong) NSFont *bundleNameLabelFont;
 @property (nonatomic, strong) NSFont *versionLabelFont;

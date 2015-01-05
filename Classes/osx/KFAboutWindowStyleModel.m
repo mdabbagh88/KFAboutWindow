@@ -14,6 +14,9 @@
 + (KFAboutWindowStyleModel *)defaultStyle {
     KFAboutWindowStyleModel *defaultStyle = [[KFAboutWindowStyleModel alloc] init];
 
+    // window
+    defaultStyle.borderless = NO;
+
     // content background
     defaultStyle.backgroundColor                  = [NSColor whiteColor];
     defaultStyle.backgroundSeparatorColor         = [NSColor gridColor];
