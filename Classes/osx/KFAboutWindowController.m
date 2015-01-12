@@ -11,6 +11,7 @@
 #import "KFAutoScrollTextView.h"
 #import "KFAboutWindowStyleModel.h"
 #import "KFGradientScrollView.h"
+#import "KFAboutWindow.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -24,6 +25,7 @@ static const unsigned short KFEscapeKeyCode = 53;
 
 
 @interface KFAboutWindowController ()
+@property (weak, nonatomic) IBOutlet KFAboutWindow *window;
 @property (weak, nonatomic) IBOutlet NSView *backgroundView;
 @property (strong) CALayer *backgroundViewSeparator;
 @property (weak, nonatomic) IBOutlet NSImageView *backgroundImageView;
@@ -207,6 +209,7 @@ static const unsigned short KFEscapeKeyCode = 53;
     if (self.styleModel.isBorderless) {
         [self.window center];
         [super showWindow:sender];
+        [self.window makeKeyAndOrderFront:nil];
     }
     else {
         [super showWindow:sender];
@@ -241,7 +244,7 @@ static const unsigned short KFEscapeKeyCode = 53;
     self.window.backgroundColor = [NSColor clearColor];
     self.window.opaque          = NO;
     self.window.hasShadow       = YES;
-    self.window.level           = NSModalPanelWindowLevel;
+//    self.window.level           = NSModalPanelWindowLevel;
 
     self.backgroundView.wantsLayer = YES;
     self.backgroundView.frame = NSMakeRect(NSMinX(self.backgroundView.frame),

@@ -20,6 +20,7 @@
 		1D8FD4E218C7D7CE00D9A9FA /* KFAboutWindowPreviewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8FD4E118C7D7CE00D9A9FA /* KFAboutWindowPreviewTests.m */; };
 		1DA9F25718C887D0001BAB97 /* Acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DA9F25618C887D0001BAB97 /* Acknowledgements.plist */; };
 		1DA9F25D18C8A515001BAB97 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA9F25C18C8A515001BAB97 /* QuartzCore.framework */; };
+		FDD832741A5AA12F00CEBA9C /* KFAboutWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD832731A5AA12F00CEBA9C /* KFAboutWindow.m */; };
 		FDEBCD6719F9AA8000540776 /* KFAboutWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDEBCD5819F9AA7F00540776 /* KFAboutWindow.xib */; };
 		FDEBCD6819F9AA8000540776 /* KFAboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDEBCD5C19F9AA7F00540776 /* KFAboutWindowController.m */; };
 		FDEBCD6919F9AA8000540776 /* KFAboutWindowStyleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FDEBCD5E19F9AA7F00540776 /* KFAboutWindowStyleModel.m */; };
@@ -61,6 +62,8 @@
 		1D8FD4E118C7D7CE00D9A9FA /* KFAboutWindowPreviewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KFAboutWindowPreviewTests.m; sourceTree = "<group>"; };
 		1DA9F25618C887D0001BAB97 /* Acknowledgements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Acknowledgements.plist; sourceTree = "<group>"; };
 		1DA9F25C18C8A515001BAB97 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		FDD832721A5AA12F00CEBA9C /* KFAboutWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KFAboutWindow.h; sourceTree = "<group>"; };
+		FDD832731A5AA12F00CEBA9C /* KFAboutWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KFAboutWindow.m; sourceTree = "<group>"; };
 		FDEBCD5819F9AA7F00540776 /* KFAboutWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KFAboutWindow.xib; sourceTree = "<group>"; };
 		FDEBCD5B19F9AA7F00540776 /* KFAboutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KFAboutWindowController.h; sourceTree = "<group>"; };
 		FDEBCD5C19F9AA7F00540776 /* KFAboutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KFAboutWindowController.m; sourceTree = "<group>"; };
@@ -212,6 +215,8 @@
 		FDEBCD5A19F9AA7F00540776 /* osx */ = {
 			isa = PBXGroup;
 			children = (
+				FDD832721A5AA12F00CEBA9C /* KFAboutWindow.h */,
+				FDD832731A5AA12F00CEBA9C /* KFAboutWindow.m */,
 				FDEBCD5B19F9AA7F00540776 /* KFAboutWindowController.h */,
 				FDEBCD5C19F9AA7F00540776 /* KFAboutWindowController.m */,
 				FDEBCD5D19F9AA7F00540776 /* KFAboutWindowStyleModel.h */,
@@ -332,6 +337,7 @@
 				FDEBCD6A19F9AA8000540776 /* KFAutoScrollTextView.m in Sources */,
 				FDEBCD6819F9AA8000540776 /* KFAboutWindowController.m in Sources */,
 				1D8FD4C418C7D7CD00D9A9FA /* main.m in Sources */,
+				FDD832741A5AA12F00CEBA9C /* KFAboutWindow.m in Sources */,
 				FDEBCD6919F9AA8000540776 /* KFAboutWindowStyleModel.m in Sources */,
 				FDEBCD6B19F9AA8000540776 /* KFGradientScrollView.m in Sources */,
 				1D8FD4CB18C7D7CD00D9A9FA /* KFAppDelegate.m in Sources */,

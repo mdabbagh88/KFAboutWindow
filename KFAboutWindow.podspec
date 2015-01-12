@@ -7,11 +7,11 @@ Pod::Spec.new do |s|
                    DESC
   s.homepage         = "http://kfi-apps.com/cocoapods/"
   s.screenshots      = "https://github.com/ricobeck/KFAboutWindow/blob/master/Screenshots/Credits.png", "https://github.com/ricobeck/KFAboutWindow/blob/master/Screenshots/Acknowledgements.png"
-  s.license          = 'MIT'
   s.author           = { "rico becker" => "rico.becker@kf-interactive.com" }
   s.source           = { :git => "https://github.com/ricobeck/KFAboutWindow.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/ricobeck'
-
+  s.license          = { :type => 'MIT' }
+  
   s.osx.deployment_target = '10.9'
   s.requires_arc = true
 

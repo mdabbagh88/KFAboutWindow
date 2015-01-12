@@ -11,7 +11,7 @@
 #import "KFAboutWindowController.h"
 #import "KFAboutWindowStyleModel.h"
 
-#define kShowCustomization NO
+#define kShowCustomization YES
 
 
 @interface KFAppDelegate ()
@@ -30,18 +30,18 @@
         self.aboutWindowController = [[KFAboutWindowController alloc] init];
         self.aboutWindowController.websiteURL = [NSURL URLWithString:@"http://provisionbox.com"];
         
-//        if (kShowCustomization) {
+        if (kShowCustomization) {
             KFAboutWindowStyleModel *styleModel = [KFAboutWindowStyleModel new];
-            styleModel.backgroundColor                  = [NSColor grayColor];
-            styleModel.acknowledgementsTextColor        = [NSColor cyanColor];
-            styleModel.bundleNameLabelColor             = [NSColor greenColor];
-            styleModel.versionLabelColor                = [NSColor blueColor];
-            styleModel.humanReadableCopyrightLabelColor = [NSColor yellowColor];
+//            styleModel.backgroundColor                  = [NSColor grayColor];
+//            styleModel.acknowledgementsTextColor        = [NSColor cyanColor];
+//            styleModel.bundleNameLabelColor             = [NSColor greenColor];
+//            styleModel.versionLabelColor                = [NSColor blueColor];
+//            styleModel.humanReadableCopyrightLabelColor = [NSColor yellowColor];
             styleModel.bundleNameLabelFont              = [NSFont fontWithName:@"HelveticaNeue-Light" size:23];
             styleModel.borderless = YES;
             
             [self.aboutWindowController applyStyle:styleModel];
-//        }
+        }
     }
     [self.aboutWindowController showWindow:self];
 }
